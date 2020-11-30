@@ -1,18 +1,18 @@
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
-from algorithms import get_ref
+from algorithms import Algorithms
 from tkinter import *
 
 
 class BarChart:
-    def __init__(self, algorithm, data, frame, cb):
+    def __init__(self, algorithm, data, frame):
         n = len(data)
         m = max(data)
         self.algorithm = algorithm
         self.data = data
         self.frame = frame
-        self.sorting_algorithm_ref = get_ref(algorithm, data, cb)
+        self.sorting_algorithm_ref = Algorithms.reference(algorithm, data)
         self.figure, self.ax = plt.subplots()
         self.rectangles = self.ax.bar(range(n), self.data, align="edge")
         self.ax.set_xlim(0, n)
@@ -57,4 +57,4 @@ class BarChart:
         for rect, val in zip(self.rectangles, A):
             rect.set_height(val)
         self.iteration[0] += 1
-        self.text.set_text("Iterations: {}".format(self.iteration[0]))
+        self.text.set_text("Broj iteracija: {}".format(self.iteration[0]))

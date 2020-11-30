@@ -16,7 +16,7 @@ middle_frame = Frame(root)
 middle_frame.pack(side=BOTTOM)
 bottom_frame = Frame(middle_frame)
 bottom_frame.pack(side=BOTTOM)
-btn = Button(bottom_frame, text="Start", command=lambda: click(btn), font=('Helvetica', '16'), padx=5)
+btn = Button(bottom_frame, text="Start", command=lambda: start(btn), font=('Helvetica', '16'), padx=5)
 btn["state"] = "disabled"
 btn.pack(side=LEFT)
 reset_btn = Button(bottom_frame, text="Reset", command=lambda: reset(btn), font=('Helvetica', '16'), padx=5)
@@ -29,20 +29,10 @@ high = 100
 
 # GLOBAL VARIABLES
 algorithms_showing = []
-counter = 0
 n = 0
 
 
-def ping_callback_after_sort_finished():
-    global counter
-    counter = counter + 1
-    if counter == len(algorithms_showing):
-        btn.configure(text="Start")
-        reset_btn["state"] = "active"
-        counter = 0
-
-
-def click(btn):
+def start(btn):
     if btn['text'] == "Start":
         for barchart in algorithms_showing:
             barchart.start_animation()
@@ -66,9 +56,9 @@ def reset(btn):
         algorithms_showing.clear()
         for i in range(len(chosen_algorithms)):
             if i < 3:
-                barchart = BarChart(chosen_algorithms[i], new_data.copy(), top_frame, ping_callback_after_sort_finished)
+                barchart = BarChart(chosen_algorithms[i], new_data.copy(), top_frame)
             else:
-                barchart = BarChart(chosen_algorithms[i], new_data.copy(), middle_frame, ping_callback_after_sort_finished)
+                barchart = BarChart(chosen_algorithms[i], new_data.copy(), middle_frame)
             barchart.pack()
             algorithms_showing.append(barchart)
 
@@ -82,10 +72,11 @@ def create(listbox, add_window, e1):
         algorithm_showing.pack_forget()
     algorithms_showing.clear()
     for i in range(len(chosen_algorithms)):
+        alg = next(a for a in Algorithms if a.value == chosen_algorithms[i])
         if i < 3:
-            barchart = BarChart(Algorithms.get(chosen_algorithms[i]), data.copy(), top_frame, ping_callback_after_sort_finished)
+            barchart = BarChart(alg, data.copy(), top_frame)
         else:
-            barchart = BarChart(Algorithms.get(chosen_algorithms[i]), data.copy(), middle_frame, ping_callback_after_sort_finished)
+            barchart = BarChart(alg, data.copy(), middle_frame)
         barchart.pack()
         algorithms_showing.append(barchart)
     if len(algorithms_showing) > 0:
