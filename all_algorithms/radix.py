@@ -33,6 +33,7 @@ class RadixSort:
     def _radix_sort(cls, arr):
         max1 = max(arr)
         exp = 1
-        while max1 / exp > 0:
+        while max1 // exp > 0:
+            print(max1)
             yield from cls._counting_sort(arr, exp)
             exp *= 10
